@@ -1,11 +1,10 @@
 import BackgroundFetch from 'react-native-background-fetch';
-import PushNotification from 'react-native-push-notification';
 import { useEffect } from 'react';
 
 export default function App() {
   useEffect(() => {
     const init = async () => {
-      await BackgroundFetch.configure(
+      const status = await BackgroundFetch.configure(
         {
           minimumFetchInterval: 15,
           stopOnTerminate: false,
@@ -16,24 +15,12 @@ export default function App() {
         async (taskId) => {
           console.log('[BackgroundFetch] Tarefa iniciada:', taskId);
 
-          // 🔔 Exibe notificação
-          PushNotification.localNotification({
-            channelId: 'background-tasks',
-            title: 'Processamento iniciado',
-            message: 'O app está executando tarefas em segundo plano.',
-            allowWhileIdle: true,
-            importance: 'high',
-            priority: 'high',
-            ongoing: true, // notificação "fixa" até remover
-          });
-
-          // Simula processamento de 1 min
+          // Simula processamento de 1 minuto
           await new Promise((resolve) => setTimeout(resolve, 60000));
 
-          // ✅ Remove a notificação
-          PushNotification.cancelAllLocalNotifications();
-
           console.log('[BackgroundFetch] Tarefa finalizada:', taskId);
+
+          // Finaliza o fetch
           BackgroundFetch.finish(taskId);
         },
         (error) => {
@@ -41,7 +28,6 @@ export default function App() {
         }
       );
 
-      const status = await BackgroundFetch.status();
       console.log('[BackgroundFetch] status', status);
     };
 
