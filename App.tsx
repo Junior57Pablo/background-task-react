@@ -1,20 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import BackgroundFetch from 'react-native-background-fetch';
+import { useEffect } from 'react';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  useEffect(() => {
+        const init = async () => {
+        await BackgroundFetch.configure(
+      {
+        minimumFetchInterval: 15,
+        stopOnTerminate: false,
+        enableHeadless: true,
+        startOnBoot: true,
+        requiredNetworkType: BackgroundFetch.NETWORK_TYPE_ANY,
+      },
+      async (taskId) => {
+        console.log('[BackgroundFetch] Tarefa iniciada:', taskId);
+        // Simula processamento de 1 min
+        await new Promise((resolve) => setTimeout(resolve, 60000));
+        console.log('[BackgroundFetch] Tarefa finalizada:', taskId);
+        BackgroundFetch.finish(taskId);
+      },
+      (error) => {
+        console.error('[BackgroundFetch] erro', error);
+      }
+    );
+      console.log('[BackgroundFetch] status', status);
+    };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    init();
+  }, []);
+
+  return null;
+}

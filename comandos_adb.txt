@@ -1,0 +1,16 @@
+
+//comando para verrificar as tarefas marcadas po rum aplicativo
+
+adb shell dumpsys jobscheduler | grep com.anonymous.newbackgroundfetch -A 5
+
+
+//testar se o job ta ativo:
+adb shell cmd jobscheduler run -f com.anonymous.newbackgroundfetch 999
+
+
+//listar jobs atuais vinculados ao pacote
+adb shell dumpsys jobscheduler | grep com.anonymous.newbackgroundfetch
+
+
+//
+adb logcat | grep -i BackgroundFetch
