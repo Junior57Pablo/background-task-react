@@ -11,6 +11,9 @@ adb shell cmd jobscheduler run -f com.anonymous.newbackgroundfetch 999
 //listar jobs atuais vinculados ao pacote
 adb shell dumpsys jobscheduler | grep com.anonymous.newbackgroundfetch
 
+//tentar forçar a task a rodar
+adb shell am broadcast -a com.transistorsoft.fetch.event
+
 
 //
 adb logcat | grep -i BackgroundFetch
