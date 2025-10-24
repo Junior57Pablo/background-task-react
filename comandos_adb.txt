@@ -17,3 +17,7 @@ adb shell am broadcast -a com.transistorsoft.fetch.event
 
 //
 adb logcat | grep -i BackgroundFetch
+
+
+//Confirme que o serviço realmente foi registrado:
+adb shell cmd jobscheduler get
